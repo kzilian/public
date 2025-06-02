@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>trans 44</title>
+  <style>
+    /* Base body styles */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: black;
+      color: white;
+    }
+
+    /* Global settings to hide scrollbars */
+    html, body, .media-grid {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar,
+    .media-grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* About bar styles */
+    .about-bar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: inherit;
+      padding: 10px;
+      text-align: center;
+      font-size: 0.8rem;
+      font-style: normal;
+      color: white;
+      z-index: 1000;
+    }
+
+    /* Navigation links */
+    .nav-link {
+      position: fixed;
+      top: 10px;
+      color: white;
+      font-size: 0.8rem;
+      text-decoration: none;
+      z-index: 1001;
+    }
+    .nav-link:hover { text-decoration: underline; }
+    .nav-back { left: 10px; }
+    .nav-about { right: 10px; }
+
+    /* Footer styles */
+    footer {
+      background: rgb(0, 0, 0);
+      color: rgb(255, 255, 255);
+      text-align: center;
+      padding: 10px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      font-size: 0.8em;
+    }
+
+    /* Content styles */
+    .content {
+      padding: 10px;
+      margin-top: 60px; /* Space for the about bar */
+      margin-bottom: 40px; /* Space for the footer */
+      color: white;
+    }
+    .title { font-size: 2em; margin-bottom: 10px; }
+    .subtitle { font-size: 1.2em; font-style: italic; margin-bottom: 20px; }
+    .text-block { font-size: 1rem; line-height: 1.6; }
+
+    /* ----------- Media Container Styles ----------- */
+
+    /* Type 1: Multiple Media Container (Media Grid)
+       - Items stack vertically in a column.
+       - The grid is centered, its width is adjustable, and no scrollbars (horizontal or vertical) will be visible.
+    */
+    .media-grid {
+      width: var(--media-grid-width, 90%);
+      margin: 20px auto;
+      display: flex;
+      flex-direction: column;
+      gap: var(--media-item-spacing, 20px);
+      overflow: hidden;             /* Hides overflow */
+      -ms-overflow-style: none;     /* For Internet Explorer and Edge */
+      scrollbar-width: none;        /* For Firefox */
+    }
+    .media-grid::-webkit-scrollbar {
+      display: none;                /* Hide scrollbars in Chrome, Safari and Opera */
+    }
+
+    .media-item {
+      width: 100%;
+      padding: var(--media-item-padding, 10px);
+      box-sizing: border-box;
+      text-align: center;
+    }
+    .media-item img,
+    .media-item video {
+      width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* Type 2: Fullscreen Media Container (Non-Scrollable)
+       - Covers the entire viewport.
+    */
+    .media-fullscreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      z-index: -1;
+    }
+    .media-fullscreen img,
+    .media-fullscreen video {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+    }
+  </style>
+  <script>
+    // Function to update the current date and time in the about bar.
+    function updateDateTime() {
+      const aboutBar = document.querySelector('.about-bar');
+      const currentDate = new Date();
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+      aboutBar.innerHTML = `${currentDate.toLocaleDateString("en-US", options)} - ${currentDate.toLocaleTimeString("en-US", timeOptions)}`;
+    }
+    setInterval(updateDateTime, 1000);
+  </script>
+</head>
+<body>
+  <!-- About bar -->
+  <div class="about-bar"></div>
+
+  <!-- Navigation Links -->
+  <a href="index.html" class="nav-link nav-back">home</a>
+  <a href="#about" class="nav-link nav-about">about</a>
+
+  <!-- Main Content -->
+  <div class="content">
+    <div class="title">trans #44</div>
+    <div class="subtitle">
+      Video Installation for the trans #44 vernissage.<br>
+    </div>
+    <div class="text-block">
+    </div>
+
+    <!-- Example Usage of Multiple Media Container (Type 1) src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4"> -->
+    <div class="media-fullscreen">
+      <!-- Each media item in its own container -->
+      <div class="media-fullscreen">
+        <img src="images/transvideo.gif" alt="Background GIF">
+      </div>
+      <!-- Additional media items will stack vertically without any scrollbar -->
+    </div>
+
+    <!-- Example Usage of Fullscreen Media Container (Type 2) -->
+    <!--
+    Uncomment this block to use the fullscreen container instead of the media grid.
+    <div class="media-fullscreen">
+      <img src="https://via.placeholder.com/1200x800" alt="Fullscreen Image">
+      OR
+      <video controls>
+          <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+      </video>
+    </div>
+    -->
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    © 01.01.24. Kaspar Zilian. All rights reserved.
+  </footer>
+</body>
+</html>

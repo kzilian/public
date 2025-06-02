@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>kaspar zilian</title>
+  <!-- Add these meta tags to prevent caching -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <style>
+    /* Base body styles */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: black; /* Main background color */
+      color: white;
+      overflow: hidden;
+    }
+
+    /* Global settings to hide scrollbars */
+    html, body, .media-grid {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar,
+    .media-grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* About bar styles */
+    .about-bar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: inherit;
+      padding: 10px;
+      text-align: center;
+      font-size: 0.8rem;
+      font-style: normal;
+      color: white;
+      z-index: 1000;
+    }
+
+    /* Fixed navigation links */
+    .nav-link {
+      position: fixed;
+      top: 10px;
+      color: white;
+      font-size: 0.8rem;
+      text-decoration: none;
+      z-index: 1001;
+    }
+    .nav-link:hover {
+      text-decoration: underline;
+    }
+    .nav-back {
+      left: 10px;
+    }
+    .nav-about {
+      right: 10px;
+    }
+
+    /* Header styles */
+    header {
+      margin-top: 60px;
+      text-align: center;
+      padding: 20px 0;
+    }
+    .title-text {
+      font-size: 3em;
+      font-weight: bold;
+    }
+    .subtitle {
+      font-size: 1.5em;
+      font-style: italic;
+    }
+
+    /* Main content container */
+    .content {
+      padding: 10px;
+      padding-top: 80px;
+      height: calc(100vh - 160px);
+      overflow-y: scroll;
+      background: black;
+    }
+    .content::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* List item styles */
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      margin-bottom: var(--li2-spacing, 5px);
+      font-style: italic;
+      font-size: 1rem;
+      cursor: pointer;
+      color: white;
+    }
+    li a {
+      color: white;
+    }
+    li a:hover {
+      color: white;
+      text-decoration: underline;
+    }
+    .li2 {
+      font-size: 0.8rem;
+      margin-left: 15px;
+      color: white;
+      font-style: normal;
+      line-height: 1.2;
+      margin-bottom: var(--block-spacing, 30px);
+    }
+
+    /* Footer styles */
+    footer {
+      background: rgb(0, 0, 0);
+      color: rgb(255, 255, 255);
+      text-align: center;
+      padding: 10px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      font-size: 0.8em;
+    }
+    
+    /* ---------------- Globe Specific Styles ---------------- */
+    /* Globe container – centered and always in front (z-index: 1100) */
+    .globe-container {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1100;
+      pointer-events: auto;
+    }
+
+    /* Globe style – half the screen size by default (50vmin) */
+    .globe {
+      position: relative;
+      width: 50vmin;
+      height: 50vmin;
+      transform-style: preserve-3d;
+    }
+
+    /* Each arm is centered and rotated to form the sphere */
+    .arm {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform-origin: center;
+      transform-style: preserve-3d;
+    }
+
+    /* Rectangle (or image) container – fixed height (adjustable) */
+    .rect {
+      height: 50px;
+      width: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #fff;  /* Will be overridden by JS if no image is provided */
+      position: relative;
+    }
+    .rect.has-image {
+      width: auto; 
+      background-color: transparent;
+    }
+    .rect img {
+      height: 100%;
+      width: auto;
+      display: block;
+    }
+    /* Ensure clickable links cover the full rectangle */
+    .rect a {
+      display: block;
+      width: 100%;
+      height: 100%;
+      text-decoration: none;
+      color: inherit;
+    }
+  </style>
+  <script>
+    // Prevent bfcache by assigning an empty onunload handler.
+    window.onunload = function() {};
+    
+    // Force a reload when returning via back/forward navigation.
+    window.addEventListener("pageshow", function (event) {
+      if (event.persisted || (performance.getEntriesByType("navigation")[0] &&
+                               performance.getEntriesByType("navigation")[0].type === "back_forward")) {
+        window.location.reload();
+      }
+    });
+    
+    // Update the current date and time in the about bar.
+    function updateDateTime() {
+      const aboutBar = document.querySelector('.about-bar');
+      const currentDate = new Date();
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+      aboutBar.innerHTML = `${currentDate.toLocaleDateString("en-US", options)} - ${currentDate.toLocaleTimeString("en-US", timeOptions)}`;
+    }
+    setInterval(updateDateTime, 1000);
+  </script>
+</head>
+<body>
+  <!-- About bar -->
+  <div class="about-bar"></div>
+
+  <!-- Navigation Links -->
+  <a href="index.html" class="nav-link nav-back">home</a>
+  <a href="#about" class="nav-link nav-about">about</a>
+
+  <!-- Main Content -->
+  <div class="content">
+    <div class="projects">
+      <ul>
+        <li><a href="white-elephants-trans.html">> White Elephants Trans Article</a></li>
+        <div class="li2">article for trans46 - spolia<br>
+        together with Lida Freudenreich</div>
+
+        <li><a href="flower-shelf.html">> Shelf for a Tall Flower</a></li>
+        <div class="li2">shelf in 3mm steel</div>
+        
+        <li><a href="digital-mannerism.html">> Digital Mannerism</a></li>
+        <div class="li2">research project on generative systems and the question of the reference<br>
+        chair of digital architectonics, ethz</div>
+
+        <li><a href="trans-video.html">> Trans Projections</a></li>
+        <div class="li2">video installation for the trans44 vernissage</div>
+
+        <li><a href="bench-aalto.html">> Bench for Aalto</a></li>
+        <div class="li2">new bench for a belgian office</div>
+
+        <li><a href="gordian-tale.html">> Gordian Tale</a></li>
+        <div class="li2">
+          a satyre in three acts<br>
+          text + images: kamil wróbel + kaspar zilian<br>
+          graphic design + pixel font: olt.lab / krzysztof wróbe
+        </div>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    © 01.01.24. Kaspar Zilian. All rights reserved.
+  </footer>
+
+  <!-- ------------------- Globe Container ------------------- -->
+  <div class="globe-container">
+    <div class="globe" id="globe">
+      <!-- Top group: 5 arms tilted upward (rotateX(45deg)) -->
+      <div class="arm" id="arm1" style="transform: translate(-50%, -50%) rotateY(0deg) rotateX(45deg) translateZ(25vmin);">
+        <div class="rect" id="rect1" data-src="images/GToBC_favi.jpg" data-link="gordian-tale.html"></div>
+      </div>
+      <div class="arm" id="arm2" style="transform: translate(-50%, -50%) rotateY(72deg) rotateX(45deg) translateZ(25vmin);">
+        <div class="rect" id="rect2" data-link="subpage2.html"></div>
+      </div>
+      <div class="arm" id="arm3" style="transform: translate(-50%, -50%) rotateY(144deg) rotateX(45deg) translateZ(25vmin);">
+        <div class="rect" id="rect3"></div>
+      </div>
+      <div class="arm" id="arm4" style="transform: translate(-50%, -50%) rotateY(216deg) rotateX(45deg) translateZ(25vmin);">
+        <div class="rect" id="rect4" data-src="images/we1.jpg" data-link="white-elephants-trans.html"></div>
+      </div>
+      <div class="arm" id="arm5" style="transform: translate(-50%, -50%) rotateY(288deg) rotateX(45deg) translateZ(25vmin);">
+        <div class="rect" id="rect5"></div>
+      </div>
+      
+      <!-- Equator group: 5 arms with no vertical tilt (rotateX(0deg)) -->
+      <div class="arm" id="arm6" style="transform: translate(-50%, -50%) rotateY(0deg) rotateX(0deg) translateZ(25vmin);">
+        <div class="rect" id="rect6"></div>
+      </div>
+      <div class="arm" id="arm7" style="transform: translate(-50%, -50%) rotateY(72deg) rotateX(0deg) translateZ(25vmin);">
+        <div class="rect" id="rect7" data-src="images/shelf2.JPG" data-link="flower-shelf.html"></div>
+      </div>
+      <div class="arm" id="arm8" style="transform: translate(-50%, -50%) rotateY(144deg) rotateX(0deg) translateZ(25vmin);">
+        <div class="rect" id="rect8" data-src="images/transvideo.png" data-link="trans-video.html"></div>
+      </div>
+      <div class="arm" id="arm9" style="transform: translate(-50%, -50%) rotateY(216deg) rotateX(0deg) translateZ(25vmin);">
+        <div class="rect" id="rect9"></div>
+      </div>
+      <div class="arm" id="arm10" style="transform: translate(-50%, -50%) rotateY(288deg) rotateX(0deg) translateZ(25vmin);">
+        <div class="rect" id="rect10" data-src="images/coco_vase.jpg" data-link="digital-mannerism.html"></div>
+      </div>
+      
+      <!-- Bottom group: 5 arms tilted downward (rotateX(-45deg)) -->
+      <div class="arm" id="arm11" style="transform: translate(-50%, -50%) rotateY(0deg) rotateX(-45deg) translateZ(25vmin);">
+        <div class="rect" id="rect11"></div>
+      </div>
+      <div class="arm" id="arm12" style="transform: translate(-50%, -50%) rotateY(72deg) rotateX(-45deg) translateZ(25vmin);">
+        <div class="rect" id="rect12" data-src="images/aalto2.png" data-link="bench-aalto.html"></div>
+      </div>
+      <div class="arm" id="arm13" style="transform: translate(-50%, -50%) rotateY(144deg) rotateX(-45deg) translateZ(25vmin);">
+        <div class="rect" id="rect13" data-link="subpage13.html"></div>
+      </div>
+      <div class="arm" id="arm14" style="transform: translate(-50%, -50%) rotateY(216deg) rotateX(-45deg) translateZ(25vmin);">
+        <div class="rect" id="rect14" data-link="subpage14.html"></div>
+      </div>
+      <div class="arm" id="arm15" style="transform: translate(-50%, -50%) rotateY(288deg) rotateX(-45deg) translateZ(25vmin);">
+        <div class="rect" id="rect15"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ------------------- Globe Script ------------------- -->
+  <script>
+    // ------------------- Globe Initialization Code -------------------
+    // Process each rectangle inside the globe.
+    function initGlobe() {
+      // RANDOM COLOR FUNCTION
+      function getRandomColor() {
+        const letters = "0123456789ABCDEF";
+        let color = "#";
+        for (let i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+      }
+      
+      const rectangles = document.querySelectorAll(".globe .rect");
+      rectangles.forEach(rect => {
+        // (Optional) Debugging border—remove it when satisfied.
+        //rect.style.border = "1px solid white";
+        
+        const imageUrl = rect.getAttribute("data-src");
+        if (imageUrl && imageUrl.trim() !== "") {
+          rect.classList.add("has-image");
+          const img = document.createElement("img");
+          img.src = imageUrl;
+          img.alt = "Globe Image";
+          rect.appendChild(img);
+        } else {
+          rect.style.backgroundColor = getRandomColor();
+        }
+        
+        const linkUrl = rect.getAttribute("data-link");
+        if (linkUrl && linkUrl.trim() !== "") {
+          const anchor = document.createElement("a");
+          anchor.href = linkUrl;
+          anchor.style.display = "block";
+          anchor.style.width = "100%";
+          anchor.style.height = "100%";
+          while (rect.firstChild) {
+            anchor.appendChild(rect.firstChild);
+          }
+          rect.appendChild(anchor);
+        }
+      });
+    }
+    
+    // DRAG INTERACTION: Rotation handling.
+    function setupDrag() {
+      const globe = document.getElementById("globe");
+      let isDragging = false,
+          startX = 0,
+          startY = 0,
+          rotationX = 0,
+          rotationY = 0,
+          initialRotationX = 0,
+          initialRotationY = 0;
+      
+      globe.addEventListener("mousedown", (e) => {
+        isDragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        initialRotationX = rotationX;
+        initialRotationY = rotationY;
+      });
+      
+      window.addEventListener("mousemove", (e) => {
+        if (!isDragging) return;
+        const deltaX = e.clientX - startX;
+        const deltaY = e.clientY - startY;
+        rotationY = initialRotationY + deltaX / 2;
+        rotationX = initialRotationX - deltaY / 2;
+        globe.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
+      });
+      
+      window.addEventListener("mouseup", () => {
+        isDragging = false;
+      });
+    }
+    
+     // ------------------- When the DOM is Ready -------------------
+    document.addEventListener("DOMContentLoaded", () => {
+        initGlobe();
+        setupDrag();
+    });
+    
+    // Instead of deactivating the home link on the landing page,
+    // make it mimic the browser's back arrow.
+    const homeLink = document.querySelector(".nav-back");
+    homeLink.addEventListener("click", function(e) {
+        e.preventDefault();
+        window.history.back();
+    });
+        
+    // Force a reload when returning via back/forward navigation.
+    window.addEventListener("pageshow", function (event) {
+        if (event.persisted || (performance.getEntriesByType("navigation")[0] &&
+                                performance.getEntriesByType("navigation")[0].type === "back_forward")) {
+        window.location.reload();
+        }
+    });
+  </script>
+</body>
+</html>
